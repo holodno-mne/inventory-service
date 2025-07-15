@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="insert-test-products" author="holodno">
+        <preConditions onError="HALT">
+            <tableExists tableName="PRODUCT"/>
+        </preConditions>
+
+        <insert tableName="PRODUCT">
+            <column name="NAME" value="Ноутбук Lenovo IdeaPad 5"/>
+            <column name="QUANTITY" valueNumeric="10"/>
+            <column name="PRICE" valueNumeric="899.99"/>
+        </insert>
+
+        <insert tableName="PRODUCT">
+            <column name="NAME" value="Смартфон Samsung Galaxy S23"/>
+            <column name="QUANTITY" valueNumeric="10"/>
+            <column name="PRICE" valueNumeric="999.00"/>
+        </insert>
+
+        <insert tableName="PRODUCT">
+            <column name="NAME" value="Наушники Sony WH-1000XM5"/>
+            <column name="QUANTITY" valueNumeric="10"/>
+            <column name="PRICE" valueNumeric="349.99"/>
+        </insert>
+
+        <insert tableName="PRODUCT">
+            <column name="NAME" value="Монитор Dell 27 4K"/>
+            <column name="QUANTITY" valueNumeric="10"/>
+            <column name="PRICE" valueNumeric="599.50"/>
+        </insert>
+
+        <insert tableName="PRODUCT">
+            <column name="NAME" value="Клавиатура Logitech MX Keys"/>
+            <column name="QUANTITY" valueNumeric="10"/>
+            <column name="PRICE" valueNumeric="129.95"/>
+        </insert>
+
+        <insert tableName="PRODUCT">
+            <column name="NAME" value="Мышь Razer DeathAdder V3"/>
+            <column name="QUANTITY" valueNumeric="10"/>
+            <column name="PRICE" valueNumeric="69.99"/>
+        </insert>
+
+        <insert tableName="PRODUCT">
+            <column name="NAME" value="SSD Samsung 1TB 980 Pro"/>
+            <column name="QUANTITY" valueNumeric="10"/>
+            <column name="PRICE" valueNumeric="129.00"/>
+        </insert>
+
+        <insert tableName="PRODUCT">
+            <column name="NAME" value="Внешний диск Seagate 2TB"/>
+            <column name="QUANTITY" valueNumeric="10"/>
+            <column name="PRICE" valueNumeric="79.99"/>
+        </insert>
+
+        <insert tableName="PRODUCT">
+            <column name="NAME" value="Роутер TP-Link Archer AX55"/>
+            <column name="QUANTITY" valueNumeric="10"/>
+            <column name="PRICE" valueNumeric="159.00"/>
+        </insert>
+
+        <insert tableName="PRODUCT">
+            <column name="NAME" value="Фитнес-браслет Xiaomi Mi Band 7"/>
+            <column name="QUANTITY" valueNumeric="10"/>
+            <column name="PRICE" valueNumeric="59.99"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="PRODUCT">
+                <where>NAME IN (
+                    'Ноутбук Lenovo IdeaPad 5',
+                    'Смартфон Samsung Galaxy S23',
+                    'Наушники Sony WH-1000XM5',
+                    'Монитор Dell 27"" 4K',
+                    'Клавиатура Logitech MX Keys',
+                    'Мышь Razer DeathAdder V3',
+                    'SSD Samsung 1TB 980 Pro',
+                    'Внешний диск Seagate 2TB',
+                    'Роутер TP-Link Archer AX55',
+                    'Фитнес-браслет Xiaomi Mi Band 7'
+                    )</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

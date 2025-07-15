@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+
+    <changeSet id="create-table-product" author="holodno">
+        <preConditions onError="HALT">
+            <not>
+                <tableExists tableName="PRODUCT"/>
+            </not>
+        </preConditions>
+        <createTable tableName="PRODUCT">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="QUANTITY" type="INTEGER"/>
+            <column name="PRICE" type="DECIMAL(10,2)"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="PRODUCT"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
