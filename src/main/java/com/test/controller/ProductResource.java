@@ -62,6 +62,7 @@ public class ProductResource {
         log.info("Deleting product with id {}", id);
         boolean deleted =  productService.deleteById(id);
         if (!deleted) {
+            log.warn("Cannot delete product with id {}", id);
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("Product not found")
                     .build();
