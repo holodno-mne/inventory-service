@@ -1,8 +1,10 @@
 package com.test.controller;
 
 
+import com.test.dto.ProductDTO;
 import com.test.entity.Product;
 import com.test.repository.ProductRepository;
+import com.test.service.ProductService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -21,67 +23,50 @@ public class ProductResource {
     private static final Logger log = LoggerFactory.getLogger(ProductResource.class);
 
     @Inject
-    ProductRepository productRepository;
+    ProductService productService;
 
     @GET
-    public List<Product> list() {
+    public List<ProductDTO> list() {
         log.info("Request a list of all products");
-        return productRepository.listAll();
+        return productService.listAll();
     }
 
     @GET
     @Path("/{id}")
-    public Response get(@PathParam("id") Long id) {
-        Product product = productRepository.findById(id);
-        log.info("Request a get product with id {}", id);
-        if (product == null) {
-            log.warn("Product not found");
-            throw new NotFoundException("Product with id " + id + " not found");
-        }
-        return Response.ok(product).build();
+    public ProductDTO getById(@PathParam("id") Long id) {
+        log.info("Request a product with id " + id);
+        return productService.getById(id);
+
     }
 
     @POST
-    @Transactional
-    public Response create(Product product) {
-        log.info("Create product with name {}", product.getName());
-        productRepository.persist(product);
-        log.info("Product with name {} created", product.getName());
-        return Response.status(201).entity(product).build();
+    public Response create(ProductDTO productDTO) {
+        log.info("Create product with name {}", productDTO.getName());
+        ProductDTO created = productService.create(productDTO);
+        log.info("Product with name {} created", productDTO.getName());
+        return Response.status(Response.Status.CREATED)
+                .entity(created)
+                .build();
     }
 
     @PUT
-    @Path("{id}")
-    @Transactional
-    public Response update(@PathParam("id") Long id, Product updateProduct) {
+    @Path("/{id}")
+    public ProductDTO update(@PathParam("id") Long id, ProductDTO productDTO) {
         log.info("Update product with id {}", id);
-        Product product = productRepository.findById(id);
-        if (product == null) {
-            log.warn("Product not found");
-            return Response.status(404).build();
-        }
-
-        product.setName(updateProduct.getName());
-        product.setQuantity(updateProduct.getQuantity());
-        product.setPrice(updateProduct.getPrice());
-
-        log.info("Update is successful");
-
-        return Response.ok(product).build();
+        return productService.update(id, productDTO);
     }
 
     @DELETE
-    @Path("{id}")
-    @Transactional
+    @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
-        Product product = productRepository.findById(id);
-        log.info("Delete product with id {}", id);
-        if (product == null) {
-            log.warn("Product not found");
-            return Response.status(404).build();
+        log.info("Deleting product with id {}", id);
+        boolean deleted =  productService.deleteById(id);
+        if (!deleted) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("Product not found")
+                    .build();
         }
-        productRepository.delete(product);
-        log.info("Delete is successful");
+        log.info("Product with id {} deleted", id);
         return Response.noContent().build();
     }
 
